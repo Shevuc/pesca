@@ -1,0 +1,77 @@
+# settings.py
+# Todas as configuracoes do Jogo da Pesca ficam aqui.
+import os
+
+# --------------------------------------------------
+# JANELA
+# --------------------------------------------------
+LARGURA = 900
+ALTURA = 600
+FPS = 60
+TITULO = "Jogo da Pesca"
+
+# --------------------------------------------------
+# CAMINHOS E FICHEIROS
+# --------------------------------------------------
+PASTA_BASE = os.path.dirname(os.path.abspath(__file__))
+PASTA_IMAGENS = os.path.join(PASTA_BASE, "images")
+
+FICHEIRO_FUNDO = os.path.join(PASTA_IMAGENS, "fundo.png")
+FICHEIRO_BARCO = os.path.join(PASTA_IMAGENS, "barco.png")
+FICHEIRO_PEIXE = os.path.join(PASTA_IMAGENS, "peixe.png")
+FICHEIRO_BOTA = os.path.join(PASTA_IMAGENS, "bota.png")
+
+# --------------------------------------------------
+# TAMANHOS DAS IMAGENS (largura, altura)
+# --------------------------------------------------
+BARCO_TAMANHO = (180, 105)
+PEIXE_TAMANHO = (75, 48)
+BOTA_TAMANHO = (48, 48)
+
+# --------------------------------------------------
+# CORES (R, G, B)
+# --------------------------------------------------
+BRANCO = (255, 255, 255)
+PRETO = (0, 0, 0)
+AZUL_ESCURO = (5, 35, 75)
+VERMELHO = (230, 50, 50)
+COR_LINHA = (245, 245, 245)
+COR_ANZOL = (210, 210, 220)
+
+# --------------------------------------------------
+# FONTES
+# --------------------------------------------------
+FONTE_NOME = "arial"
+FONTE_TAMANHO = 30
+FONTE_GRANDE_TAMANHO = 58
+FONTE_PEQUENA_TAMANHO = 22
+
+# --------------------------------------------------
+# BARCO
+# --------------------------------------------------
+BARCO_X_INICIAL = 350
+BARCO_Y = 75
+VELOCIDADE_BARCO = 5
+
+# --------------------------------------------------
+# ANZOL
+# --------------------------------------------------
+VELOCIDADE_ANZOL = 5
+ANZOL_Y_INICIAL = 170      # altura do anzol quando esta parado
+ANZOL_Y_LIMITE = 530       # profundidade maxima
+LINHA_Y_INICIO = 145       # onde a linha comeca no barco
+
+# --------------------------------------------------
+# JOGO
+# --------------------------------------------------
+VIDAS_INICIAIS = 3
+INTERVALO_OBJETOS = 1400   # milissegundos entre objetos novos
+OBJETOS_INICIAIS = 3
+OBJETO_Y_MIN = 220
+OBJETO_Y_MAX = 500
+
+# Peixe aparece 2 vezes, por isso e mais provavel que a bota
+TIPOS_OBJETOS = ["peixe", "peixe", "bota"]
+
+VELOCIDADE_PEIXE = (2, 4)  # (minima, maxima)
+VELOCIDADE_BOTA = (2, 3)
