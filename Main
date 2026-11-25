@@ -1,0 +1,166 @@
+
+import pygame
+import random
+
+from settings import *
+from barco import Barco
+from peixe import Peixe
+from bota import Bota
+from anzol import Anzol
+
+
+# INICIALIZAR O JOGO
+pygame.init()
+
+ecra = pygame.display.set_mode((LARGURA, ALTURA))
+pygame.display.set_caption(TITULO)
+
+relogio = pygame.time.Clock()
+
+fundo = pygame.image.load(FICHEIRO_FUNDO).convert()
+fundo = pygame.transform.scale(fundo, (LARGURA, ALTURA))
+
+fonte = pygame.font.SysFont("arial", 30)
+
+
+# CRIAR OBJETOS DO JOGO
+barco = Barco()
+anzol = Anzol()
+
+pontos = 0
+vidas = VIDAS_INICIAIS
+objetos = []
+
+estado_jogo = "a_jogar"
+tempo_ultimo_objeto = pygame.time.get_ticks()
+
+
+# CRIAR OBJETO
+def criar_objeto():
+
+    tipo = random.choice(TIPOS_OBJETOS)
+    y = random.randint(OBJETO_Y_MIN, OBJETO_Y_MAX)
+
+    if tipo == "peixe":
+        objeto = Peixe(y, random.randint(*VELOCIDADE_PEIXE))
+    else:
+        objeto = Bota(y, random.randint(*VELOCIDADE_BOTA))
+
+    objetos.append(objeto)
+
+
+# CRIAR OBJETOS INICIAIS
+for i in range(OBJETOS_INICIAIS):
+    criar_objeto()
+
+
+# CICLO PRINCIPAL
+a_correr = True
+
+while a_correr:
+
+    relogio.tick(FPS)
+
+    # EVENTOS
+    for evento in pygame.event.get():
+
+        if evento.type == pygame.QUIT:
+            a_correr = False
+
+        if evento.type == pygame.KEYDOWN:
+
+            if evento.key == pygame.K_ESCAPE:
+                a_correr = False
+
+            if evento.key == pygame.K_SPACE and estado_jogo == "a_jogar":
+                if anzol.estado == "parado":
+                    anzol.estado = "descer"
+
+            if evento.key == pygame.K_r and estado_jogo == "fim":
+
+                pontos = 0
+                vidas = VIDAS_INICIAIS
+                objetos = []
+
+                barco = Barco()
+                anzol = Anzol()
+
+                estado_jogo = "a_jogar"
+                tempo_ultimo_objeto = pygame.time.get_ticks()
+
+                for i in range(OBJETOS_INICIAIS):
+                    criar_objeto()
+
+    # ATUALIZAR JOGO
+    if estado_jogo == "a_jogar":
+
+        barco.update(pygame.key.get_pressed())
+        anzol.update(barco)
+
+        # CRIAR NOVOS OBJETOS
+        tempo_atual = pygame.time.get_ticks()
+
+        if tempo_atual - tempo_ultimo_objeto >= INTERVALO_OBJETOS:
+            criar_objeto()
+            tempo_ultimo_objeto = tempo_atual
+
+        # ATUALIZAR OBJETOS
+        for objeto in objetos:
+            objeto.update()
+
+            if objeto.rect.left > LARGURA:
+                objeto.rect.right = 0
+                objeto.rect.y = random.randint(OBJETO_Y_MIN, OBJETO_Y_MAX)
+
+        # VERIFICAR COLISOES
+        if anzol.estado != "parado":
+
+            for objeto in objetos[:]:
+
+                if anzol.obter_rect().colliderect(objeto.rect):
+
+                    if objeto.tipo == "peixe":
+                        pontos += 1
+                    else:
+                        vidas -= 1
+
+                    objetos.remove(objeto)
+                    anzol.estado = "subir"
+
+                    if vidas <= 0:
+                        estado_jogo = "fim"
+
+                    break
+
+    # DESENHAR NO ECRÃ
+    ecra.blit(fundo, (0, 0))
+
+    barco.desenhar(ecra)
+    anzol.desenhar(ecra, barco)
+
+    for objeto in objetos:
+        objeto.desenhar(ecra)
+
+    # Fundo azul-escuro
+    pygame.draw.rect(ecra, AZUL_ESCURO, (10, 10, 250, 45), border_radius=5)
+    pygame.draw.rect(ecra, AZUL_ESCURO, (700, 10, 190, 45), border_radius=5)
+
+    # MOSTRAR PONTOS E VIDAS
+    texto_pontos = fonte.render("Pontos: " + str(pontos), True, BRANCO)
+    texto_vidas = fonte.render("Vidas: " + str(vidas), True, BRANCO)
+
+    ecra.blit(texto_pontos, (20, 15))
+    ecra.blit(texto_vidas, (720, 15))
+
+    # FIM DE JOGO
+    if estado_jogo == "fim":
+
+        mensagem = fonte.render("FIM DE JOGO", True, BRANCO)
+        reiniciar = fonte.render("Carrega em R para recomecar", True, BRANCO)
+
+        ecra.blit(mensagem, (LARGURA // 2 - 120, 250))
+        ecra.blit(reiniciar, (LARGURA // 2 - 190, 310))
+
+    pygame.display.flip()
+
+pygame.quit()
