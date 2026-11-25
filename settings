@@ -1,6 +1,5 @@
+
 # settings.py
-# Todas as configuracoes do Jogo da Pesca ficam aqui.
-import os
 
 # --------------------------------------------------
 # JANELA
@@ -13,13 +12,10 @@ TITULO = "Jogo da Pesca"
 # --------------------------------------------------
 # CAMINHOS E FICHEIROS
 # --------------------------------------------------
-PASTA_BASE = os.path.dirname(os.path.abspath(__file__))
-PASTA_IMAGENS = os.path.join(PASTA_BASE, "images")
-
-FICHEIRO_FUNDO = os.path.join(PASTA_IMAGENS, "fundo.png")
-FICHEIRO_BARCO = os.path.join(PASTA_IMAGENS, "barco.png")
-FICHEIRO_PEIXE = os.path.join(PASTA_IMAGENS, "peixe.png")
-FICHEIRO_BOTA = os.path.join(PASTA_IMAGENS, "bota.png")
+FICHEIRO_FUNDO = "images/fundo.png"
+FICHEIRO_BARCO = "images/barco.png"
+FICHEIRO_PEIXE = "images/peixe.png"
+FICHEIRO_BOTA = "images/bota.png"
 
 # --------------------------------------------------
 # TAMANHOS DAS IMAGENS (largura, altura)
@@ -57,21 +53,21 @@ VELOCIDADE_BARCO = 5
 # ANZOL
 # --------------------------------------------------
 VELOCIDADE_ANZOL = 5
-ANZOL_Y_INICIAL = 170      # altura do anzol quando esta parado
-ANZOL_Y_LIMITE = 530       # profundidade maxima
-LINHA_Y_INICIO = 145       # onde a linha comeca no barco
+ANZOL_Y_INICIAL = 170
+ANZOL_Y_LIMITE = 530
+LINHA_Y_INICIO = 145
 
 # --------------------------------------------------
 # JOGO
 # --------------------------------------------------
 VIDAS_INICIAIS = 3
-INTERVALO_OBJETOS = 1400   # milissegundos entre objetos novos
-OBJETOS_INICIAIS = 3
+INTERVALO_OBJETOS = 1300
+OBJETOS_INICIAIS = 5
 OBJETO_Y_MIN = 220
 OBJETO_Y_MAX = 500
 
-# Peixe aparece 2 vezes, por isso e mais provavel que a bota
+# Peixe aparece 2 vezes, por isso é mais provável que a bota
 TIPOS_OBJETOS = ["peixe", "peixe", "bota"]
 
-VELOCIDADE_PEIXE = (2, 4)  # (minima, maxima)
+VELOCIDADE_PEIXE = (2, 4)
 VELOCIDADE_BOTA = (2, 3)
